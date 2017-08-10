@@ -42,7 +42,11 @@
 			<!-- /.navbar-collapse -->
 		</div>
 		<!-- /.container -->
-	</nav>
+	</nav>           
+
+		<asp:Label ID="lblUser" CssClass="sr-only " runat="server" >
+		<% Response.Write(HttpContext.Current.User.Identity.Name); %>
+		 </asp:Label>
 		  <div class="container">
 				<div class="row">
 			<div style="padding-left: 0px !important;" class="col-lg-12">

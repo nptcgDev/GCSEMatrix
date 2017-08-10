@@ -31,13 +31,13 @@ namespace GCSEMatrix {
         protected global::System.Web.UI.HtmlControls.HtmlForm form1;
         
         /// <summary>
-        /// lblUsername control.
+        /// lblUser control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblUsername;
+        protected global::System.Web.UI.WebControls.Label lblUser;
         
         /// <summary>
         /// txtStudentID control.
@@ -58,13 +58,13 @@ namespace GCSEMatrix {
         protected global::System.Web.UI.WebControls.TextBox txtStudentName;
         
         /// <summary>
-        /// txtULN control.
+        /// txtULI control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtULN;
+        protected global::System.Web.UI.WebControls.TextBox txtULI;
         
         /// <summary>
         /// txtUCI control.
@@ -202,22 +202,31 @@ namespace GCSEMatrix {
         protected global::System.Web.UI.WebControls.DropDownList DDLVocationalGrade6;
         
         /// <summary>
-        /// lbltrue control.
+        /// DDLVocationalSubject7 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lbltrue;
+        protected global::System.Web.UI.WebControls.DropDownList DDLVocationalSubject7;
         
         /// <summary>
-        /// lblplr control.
+        /// DDLVocationalGrade7 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblplr;
+        protected global::System.Web.UI.WebControls.DropDownList DDLVocationalGrade7;
+        
+        /// <summary>
+        /// rdiolstResults_Status control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.RadioButtonList rdiolstResults_Status;
         
         /// <summary>
         /// BtnSaveResults control.
@@ -227,5 +236,23 @@ namespace GCSEMatrix {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Button BtnSaveResults;
+        
+        /// <summary>
+        /// BtnUpdateResults control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button BtnUpdateResults;
+        
+        /// <summary>
+        /// BtnViewReport control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button BtnViewReport;
     }
 }

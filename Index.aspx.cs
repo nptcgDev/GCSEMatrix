@@ -12,5 +12,6 @@ namespace GCSEMatrix
         {
             Int32 personCode = Convert.ToInt32(txtperson_code.Text);
         }
+
     }
 }

@@ -14,6 +14,7 @@
 	</head>
 <body>
 	<form id="form1" runat="server">
+
 		<nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
 		<div class="container">
 			<!-- Brand and toggle get grouped for better mobile display -->
@@ -24,7 +25,7 @@
 					<span class="icon-bar"></span>
 					<span class="icon-bar"></span>
 				</button>
-				<a class="navbar-brand" href="index.html">NPTC Group</a>
+				<img src="nptc-logo.png"><a class="navbar-brand" href="#"></a></img>
 
 			</div>
 			<!-- Collect the nav links, forms, and other content for toggling -->
@@ -47,30 +48,32 @@
 	</nav>
 
 		<div class="container">
+		   <asp:Label ID="lblUser" CssClass="sr-only " runat="server" >
+				<% Response.Write(HttpContext.Current.User.Identity.Name); %>
+		 </asp:Label>
 			<!-- /.row -->
 			<div class="row">
-				<asp:Label ID="lblUsername" runat="server" Text="willrob"></asp:Label>
 				<div class="form-inline">
 					<label for="txtStudentID" class="lead">Student ID:</label>
 					<asp:TextBox ID="txtStudentID" class="form-control" runat="server" Enabled="False"></asp:TextBox>
 				</div>
 				<div class="form-inline">
 					<label for="txtStudentName" class="lead">Student Name:</label>
-					<asp:TextBox ID="txtStudentName" required class="form-control" Enabled="False" runat="server"></asp:TextBox>
+					<asp:TextBox ID="txtStudentName" class="form-control" Enabled="False" runat="server"></asp:TextBox>
 				</div>
 
 				<div class="form-inline">
-					<label for="txtULN" class="lead">ULN:</label>
-					<asp:TextBox ID="txtULN" class="form-control" runat="server" MaxLength="13"></asp:TextBox>
+					<label for="txtULI" class="lead">ULN:</label>
+					<asp:TextBox ID="txtULI" required class="form-control" runat="server" MaxLength="13"></asp:TextBox>
 				</div>
 
 				<div class="form-inline">
 					<label for="txtUCI" class="lead">UCI:</label>
-					<asp:TextBox ID="txtUCI" class="form-control" runat="server" MaxLength="13"></asp:TextBox>
+					<asp:TextBox ID="txtUCI" required class="form-control" runat="server" MaxLength="13"></asp:TextBox>
 				</div>
 				<div class="table-responsive col-lg-6">
 				 <p class="lead">GCSEs</p>
-					 <asp:ObjectDataSource ID="ObjectDataSource1" runat="server" SelectMethod="GetGCSESubjectList" TypeName="GCSEMatrix.DAO.ReturnSubjects"></asp:ObjectDataSource>
+					 <asp:ObjectDataSource ID="ObjectDataSource1" runat="server" SelectMethod="GetGCSESubjectList" TypeName="GCSEMatrix.DAO.ReturnData"></asp:ObjectDataSource>
 					<asp:Repeater ID="Repeater1" runat="server" DataSourceID="ObjectDataSource1">
 						<HeaderTemplate>
 				<table style="width:auto;" class="table table-bordered table-inverse">
@@ -114,50 +117,168 @@
 						</thead>
 						<tbody>
 							<tr>
-								<td><asp:DropDownList ID="DDLVocationalSubject1" runat="server" CssClass="form-control" AutoPostBack="true">
+								<td><asp:DropDownList ID="DDLVocationalSubject1" runat="server" CssClass="form-control" AutoPostBack="true" OnSelectedIndexChanged="DDLVocationalSubject1_SelectedIndexChanged">
 									<asp:ListItem Value="Select Subject">Select Subject</asp:ListItem>
-                                    <asp:ListItem Value="BTEC-AW2">BTEC L2 AWARD</asp:ListItem>
-									<asp:ListItem Value="BTEC-CE2">BTEC L2 Certificate</asp:ListItem>
-									<asp:ListItem Value="BTEC-EC2">BTEC Ext Cert</asp:ListItem>
-                                    <asp:ListItem Value="BTEC-EC2">BTEC Ext Cert</asp:ListItem>
+									<asp:ListItem Value="BTEC-AW2">BTEC L2 Award - BTEC-AW2</asp:ListItem>
+									<asp:ListItem Value="BTEC-CE2">BTEC L2 Certificate - BTEC-CE2</asp:ListItem>
+									<asp:ListItem Value="BTEC-EC2">BTEC L2 Ext Cert - BTEC-EC2</asp:ListItem>
+									<asp:ListItem Value="BTEC-D12">BTEC Diploma - BTEC-D12</asp:ListItem>
+									<asp:ListItem Value="ONAT-FA2">OCR National First Award - ONAT-FA2</asp:ListItem>
+									<asp:ListItem Value="ONAT-AW2">OCR National Award - ONAT-AW2</asp:ListItem>
+									<asp:ListItem Value="ONAT-FC2">OCR National Certificate - ONAT-FC2</asp:ListItem>
 									</asp:DropDownList></td>
-								<td><asp:DropDownList ID="DDLVocationalGrade1"  CssClass="form-control" runat="server">
-									<asp:ListItem>Select Grade</asp:ListItem>
-									<asp:ListItem Text="PASS">PASS</asp:ListItem>
-									</asp:DropDownList></td>
-							</tr>
-							<tr>
-								<td><asp:DropDownList ID="DDLVocationalSubject2" runat="server" CssClass="form-control" AutoPostBack="true">
+								<td><asp:DropDownList ID="DDLVocationalGrade1" AutoPostBack="true"  CssClass="form-control" runat="server">
+									<asp:ListItem Value="Select Grade">Select Grade</asp:ListItem>
+									<asp:ListItem Value="PASS">PASS</asp:ListItem>
+									<asp:ListItem Value="MERIT">MERIT</asp:ListItem>
+									<asp:ListItem Value="DIST">DIST</asp:ListItem>
+									<asp:ListItem Value="DIST*">DIST*</asp:ListItem>
+									</asp:DropDownList>
 
-								    </asp:DropDownList></td>
-								<td><asp:DropDownList ID="DDLVocationalGrade2"  CssClass="form-control" runat="server"></asp:DropDownList></td>
+								</td>
+							</tr>
+							  <tr>
+								<td><asp:DropDownList ID="DDLVocationalSubject2" runat="server" CssClass="form-control" AutoPostBack="true" OnSelectedIndexChanged="DDLVocationalSubject2_SelectedIndexChanged">
+									<asp:ListItem Value="Select Subject">Select Subject</asp:ListItem>
+									<asp:ListItem Value="BTEC-AW2">BTEC L2 Award - BTEC-AW2</asp:ListItem>
+									<asp:ListItem Value="BTEC-CE2">BTEC L2 Certificate - BTEC-CE2</asp:ListItem>
+									<asp:ListItem Value="BTEC-EC2">BTEC L2 Ext Cert - BTEC-EC2</asp:ListItem>
+									<asp:ListItem Value="BTEC-D12">BTEC Diploma - BTEC-D12</asp:ListItem>
+									<asp:ListItem Value="ONAT-FA2">OCR National First Award - ONAT-FA2</asp:ListItem>
+									<asp:ListItem Value="ONAT-AW2">OCR National Award - ONAT-AW2</asp:ListItem>
+									<asp:ListItem Value="ONAT-FC2">OCR National Certificate - ONAT-FC2</asp:ListItem>
+									</asp:DropDownList></td>
+								<td><asp:DropDownList ID="DDLVocationalGrade2" AutoPostBack="true"  CssClass="form-control" runat="server">
+									<asp:ListItem Value="Select Grade">Select Grade</asp:ListItem>
+									<asp:ListItem Value="PASS">PASS</asp:ListItem>
+									<asp:ListItem Value="MERIT">MERIT</asp:ListItem>
+									<asp:ListItem Value="DIST">DIST</asp:ListItem>
+									<asp:ListItem Value="DIST*">DIST*</asp:ListItem>
+									</asp:DropDownList>
+
+								</td>
+							</tr>
+								<tr>
+								<td><asp:DropDownList ID="DDLVocationalSubject3" runat="server" CssClass="form-control" AutoPostBack="true" OnSelectedIndexChanged="DDLVocationalSubject3_SelectedIndexChanged">
+									<asp:ListItem Value="Select Subject">Select Subject</asp:ListItem>
+									<asp:ListItem Value="BTEC-AW2">BTEC L2 Award - BTEC-AW2</asp:ListItem>
+									<asp:ListItem Value="BTEC-CE2">BTEC L2 Certificate - BTEC-CE2</asp:ListItem>
+									<asp:ListItem Value="BTEC-EC2">BTEC L2 Ext Cert - BTEC-EC2</asp:ListItem>
+									<asp:ListItem Value="BTEC-D12">BTEC Diploma - BTEC-D12</asp:ListItem>
+									<asp:ListItem Value="ONAT-FA2">OCR National First Award - ONAT-FA2</asp:ListItem>
+									<asp:ListItem Value="ONAT-AW2">OCR National Award - ONAT-AW2</asp:ListItem>
+									<asp:ListItem Value="ONAT-FC2">OCR National Certificate - ONAT-FC2</asp:ListItem>
+									</asp:DropDownList></td>
+								<td><asp:DropDownList ID="DDLVocationalGrade3" AutoPostBack="true"  CssClass="form-control" runat="server">
+									<asp:ListItem Value="Select Grade">Select Grade</asp:ListItem>
+									<asp:ListItem Value="PASS">PASS</asp:ListItem>
+									<asp:ListItem Value="MERIT">MERIT</asp:ListItem>
+									<asp:ListItem Value="DIST">DIST</asp:ListItem>
+									<asp:ListItem Value="DIST*">DIST*</asp:ListItem>
+									</asp:DropDownList>
+
+								</td>
 							</tr>
 							<tr>
-								<td><asp:DropDownList ID="DDLVocationalSubject3" runat="server" CssClass="form-control" AutoPostBack="true"></asp:DropDownList></td>
-								<td><asp:DropDownList ID="DDLVocationalGrade3"  CssClass="form-control" runat="server"></asp:DropDownList></td>
+								<td><asp:DropDownList ID="DDLVocationalSubject4" runat="server" CssClass="form-control" AutoPostBack="true" OnSelectedIndexChanged="DDLVocationalSubject4_SelectedIndexChanged">
+									<asp:ListItem Value="Select Subject">Select Subject</asp:ListItem>
+									<asp:ListItem Value="BTEC-AW2">BTEC L2 Award - BTEC-AW2</asp:ListItem>
+									<asp:ListItem Value="BTEC-CE2">BTEC L2 Certificate - BTEC-CE2</asp:ListItem>
+									<asp:ListItem Value="BTEC-EC2">BTEC L2 Ext Cert - BTEC-EC2</asp:ListItem>
+									<asp:ListItem Value="BTEC-D12">BTEC Diploma - BTEC-D12</asp:ListItem>
+									<asp:ListItem Value="ONAT-FA2">OCR National First Award - ONAT-FA2</asp:ListItem>
+									<asp:ListItem Value="ONAT-AW2">OCR National Award - ONAT-AW2</asp:ListItem>
+									<asp:ListItem Value="ONAT-FC2">OCR National Certificate - ONAT-FC2</asp:ListItem>
+									</asp:DropDownList></td>
+								<td><asp:DropDownList ID="DDLVocationalGrade4" AutoPostBack="true"  CssClass="form-control" runat="server">
+									<asp:ListItem Value="Select Grade">Select Grade</asp:ListItem>
+									<asp:ListItem Value="PASS">PASS</asp:ListItem>
+									<asp:ListItem Value="MERIT">MERIT</asp:ListItem>
+									<asp:ListItem Value="DIST">DIST</asp:ListItem>
+									<asp:ListItem Value="DIST*">DIST*</asp:ListItem>
+									</asp:DropDownList>
+
+								</td>
 							</tr>
 							<tr>
-								<td><asp:DropDownList ID="DDLVocationalSubject4" runat="server" CssClass="form-control" AutoPostBack="true"></asp:DropDownList></td>
-								<td><asp:DropDownList ID="DDLVocationalGrade4"  CssClass="form-control" runat="server"></asp:DropDownList></td>
+								<td><asp:DropDownList ID="DDLVocationalSubject5" runat="server" CssClass="form-control" AutoPostBack="true" OnSelectedIndexChanged="DDLVocationalSubject5_SelectedIndexChanged">
+									<asp:ListItem Value="Select Subject">Select Subject</asp:ListItem>
+									<asp:ListItem Value="BTEC-AW2">BTEC L2 Award - BTEC-AW2</asp:ListItem>
+									<asp:ListItem Value="BTEC-CE2">BTEC L2 Certificate - BTEC-CE2</asp:ListItem>
+									<asp:ListItem Value="BTEC-EC2">BTEC L2 Ext Cert - BTEC-EC2</asp:ListItem>
+									<asp:ListItem Value="BTEC-D12">BTEC Diploma - BTEC-D12</asp:ListItem>
+									<asp:ListItem Value="ONAT-FA2">OCR National First Award - ONAT-FA2</asp:ListItem>
+									<asp:ListItem Value="ONAT-AW2">OCR National Award - ONAT-AW2</asp:ListItem>
+									<asp:ListItem Value="ONAT-FC2">OCR National Certificate - ONAT-FC2</asp:ListItem>
+									</asp:DropDownList></td>
+								<td><asp:DropDownList ID="DDLVocationalGrade5" AutoPostBack="true"  CssClass="form-control" runat="server">
+									<asp:ListItem Value="Select Grade">Select Grade</asp:ListItem>
+									<asp:ListItem Value="PASS">PASS</asp:ListItem>
+									<asp:ListItem Value="MERIT">MERIT</asp:ListItem>
+									<asp:ListItem Value="DIST">DIST</asp:ListItem>
+									<asp:ListItem Value="DIST*">DIST*</asp:ListItem>
+									</asp:DropDownList>
+								</td>
+							</tr>            
+
+							<tr>
+								<td><asp:DropDownList ID="DDLVocationalSubject6" runat="server" CssClass="form-control" AutoPostBack="true" OnSelectedIndexChanged="DDLVocationalSubject6_SelectedIndexChanged">
+									<asp:ListItem Value="Select Subject">Select Subject</asp:ListItem>
+									<asp:ListItem Value="BTEC-AW2">BTEC L2 Award - BTEC-AW2</asp:ListItem>
+									<asp:ListItem Value="BTEC-CE2">BTEC L2 Certificate - BTEC-CE2</asp:ListItem>
+									<asp:ListItem Value="BTEC-EC2">BTEC L2 Ext Cert - BTEC-EC2</asp:ListItem>
+									<asp:ListItem Value="BTEC-D12">BTEC Diploma - BTEC-D12</asp:ListItem>
+									<asp:ListItem Value="ONAT-FA2">OCR National First Award - ONAT-FA2</asp:ListItem>
+									<asp:ListItem Value="ONAT-AW2">OCR National Award - ONAT-AW2</asp:ListItem>
+									<asp:ListItem Value="ONAT-FC2">OCR National Certificate - ONAT-FC2</asp:ListItem>
+									</asp:DropDownList></td>
+								<td><asp:DropDownList ID="DDLVocationalGrade6" AutoPostBack="true"  CssClass="form-control" runat="server">
+									<asp:ListItem Value="Select Grade">Select Grade</asp:ListItem>
+									<asp:ListItem Value="PASS">PASS</asp:ListItem>
+									<asp:ListItem Value="MERIT">MERIT</asp:ListItem>
+									<asp:ListItem Value="DIST">DIST</asp:ListItem>
+									<asp:ListItem Value="DIST*">DIST*</asp:ListItem>
+									</asp:DropDownList>
+								</td>
 							</tr>
 							<tr>
-								<td><asp:DropDownList ID="DDLVocationalSubject5" runat="server" CssClass="form-control" AutoPostBack="true"></asp:DropDownList></td>
-								<td><asp:DropDownList ID="DDLVocationalGrade5"  CssClass="form-control" runat="server"></asp:DropDownList></td>
-							</tr>
-							<tr>
-								<td><asp:DropDownList ID="DDLVocationalSubject6" runat="server" CssClass="form-control" AutoPostBack="true"></asp:DropDownList></td>
-								<td><asp:DropDownList ID="DDLVocationalGrade6"  CssClass="form-control" runat="server"></asp:DropDownList></td>
+								<td><asp:DropDownList ID="DDLVocationalSubject7" runat="server" CssClass="form-control" AutoPostBack="true" OnSelectedIndexChanged="DDLVocationalSubject7_SelectedIndexChanged">
+									<asp:ListItem Value="Select Subject">Select Subject</asp:ListItem>
+									<asp:ListItem Value="BTEC-AW2">BTEC L2 Award - BTEC-AW2</asp:ListItem>
+									<asp:ListItem Value="BTEC-CE2">BTEC L2 Certificate - BTEC-CE2</asp:ListItem>
+									<asp:ListItem Value="BTEC-EC2">BTEC L2 Ext Cert - BTEC-EC2</asp:ListItem>
+									<asp:ListItem Value="BTEC-D12">BTEC Diploma - BTEC-D12</asp:ListItem>
+									<asp:ListItem Value="ONAT-FA2">OCR National First Award - ONAT-FA2</asp:ListItem>
+									<asp:ListItem Value="ONAT-AW2">OCR National Award - ONAT-AW2</asp:ListItem>
+									<asp:ListItem Value="ONAT-FC2">OCR National Certificate - ONAT-FC2</asp:ListItem>
+									</asp:DropDownList></td>
+								<td><asp:DropDownList ID="DDLVocationalGrade7" AutoPostBack="true"  CssClass="form-control" runat="server">
+									<asp:ListItem Value="Select Grade">Select Grade</asp:ListItem>
+									<asp:ListItem Value="PASS">PASS</asp:ListItem>
+									<asp:ListItem Value="MERIT">MERIT</asp:ListItem>
+									<asp:ListItem Value="DIST">DIST</asp:ListItem>
+									<asp:ListItem Value="DIST*">DIST*</asp:ListItem>
+									</asp:DropDownList>
+								</td>
 							</tr>
 						</tbody>
 					</table>
 				</div>
 			</div>
-			<asp:Label ID="lbltrue" runat="server" Text="Y"></asp:Label>
-			<asp:Label ID="lblplr" runat="server" Text="N"></asp:Label>
+			<asp:RadioButtonList ID="rdiolstResults_Status" runat="server">
+				<asp:ListItem Value="INFO-CORRECT" Selected="True"><p class="lead">I hereby declare that the results supplied above is correct.</p></asp:ListItem>
+				<asp:ListItem Value="CHECK-LATER"><p class="lead">I hereby declare that result(s) supplied above need to be confirmed at a later date via PLR.</p></asp:ListItem>
+			</asp:RadioButtonList>
 			<asp:Button ID="BtnSaveResults" cssClass="btn btn-default" runat="server" Text="Save Results" OnClick="BtnSaveResults_Click" />
-
+			<asp:Button ID="BtnUpdateResults" cssClass="btn btn-default" runat="server" Text="Update Results" Enabled="True" OnClick="BtnUpdateResults_Click" Visible="False" />
+	        <asp:Button ID="BtnViewReport" cssClass="btn btn-default" runat="server" Text="View Score" OnClientClick="RedirectToReport();" OnClick="BtnViewReport_Click" Visible="False" />
 	  </div> <!-- /. Row -->
 	</form>
 </body>
+	<script type = "text/javascript">
+	    function RedirectToReport() {
+			document.forms[0].target = "_blank";
+		}
+</script>
 </html>
 
