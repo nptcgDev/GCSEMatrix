@@ -16,7 +16,7 @@ namespace GCSEMatrix
 
         protected void btnSearch_Click(object sender, EventArgs e)
         {
-            //   Int32 personCode = Convert.ToInt32(txtperson_code.Text);
+            //d   Int32 personCode = Convert.ToInt32(txtperson_code.Text);
             string full_name = txtstudent_name.Text;
 
         }
