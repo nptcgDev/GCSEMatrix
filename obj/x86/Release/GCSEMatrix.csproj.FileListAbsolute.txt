@@ -1,0 +1,5 @@
+C:\Users\willrob\documents\visual studio 2012\Projects\GCSEMatrix\GCSEMatrix\bin\GCSEMatrix.dll
+C:\Users\willrob\documents\visual studio 2012\Projects\GCSEMatrix\GCSEMatrix\bin\GCSEMatrix.pdb
+C:\Users\willrob\documents\visual studio 2012\Projects\GCSEMatrix\GCSEMatrix\obj\x86\Release\GCSEMatrix.dll
+C:\Users\willrob\documents\visual studio 2012\Projects\GCSEMatrix\GCSEMatrix\obj\x86\Release\GCSEMatrix.pdb
+C:\Users\willrob\documents\visual studio 2012\Projects\GCSEMatrix\GCSEMatrix\obj\x86\Release\GCSEMatrix.csprojResolveAssemblyReference.cache

@@ -4,7 +4,8 @@ using System.Linq;
 using System.Web;
 using System.Configuration;
 using System.Data;
-using System.Data.OracleClient;
+using Oracle.DataAccess;
+using Oracle.DataAccess.Client;
 namespace GCSEMatrix.DAO
 {
     public class ReturnData
@@ -41,40 +42,6 @@ namespace GCSEMatrix.DAO
             return dt;
         }
 
-        public static DataTable GetVocationalGradesList(string Subject_Code)
-        {
-
-            string conString = ConfigurationManager.ConnectionStrings["ebstrainROConnectionString"].ConnectionString;
-            OracleConnection con = new OracleConnection(conString);
-            OracleCommand cmd = new OracleCommand("SELECT GRADE_NAME,GRADE_CODE FROM ROBERTW.NPTCG_MATRIX_GRADE Where GRADE_CODE=:Subject_Code", con);
-            
-            con.Open();
-            cmd.CommandType = CommandType.Text;
-
-            cmd.Parameters.AddWithValue(":Subject_Code", Subject_Code);
-            
-            OracleDataReader dr = cmd.ExecuteReader();
-            
-            DataTable dt = null;
-
-            if (dr.HasRows)
-            {
-
-                dt = new DataTable("ROBERTW.NPTCG_MATRIX_GRADE");
-                dt.Load(dr);
-
-                return dt;
-            }
-
-            if (cmd != null)
-            {
-                cmd.Dispose();
-                cmd = null;
-            }
-
-            return dt;
-
-        }
 
         public static DataTable GetGCSESubjectList()
         {
@@ -83,7 +50,7 @@ namespace GCSEMatrix.DAO
             OracleConnection con = new OracleConnection(conString);
 
 
-            OracleCommand cmd = new OracleCommand("SELECT SUBJECT_NAME, SUBJECT_CODE, SUBJECT_VALUE FROM NPTCG_MATRIX_SUBJECT WHERE SUBJECT_CODE IN ('GCSEFULL','GCSESHORT') ORDER BY SUBJECT_ID ASC", con);
+            OracleCommand cmd = new OracleCommand("SELECT SUBJECT_NAME, SUBJECT_CODE, SUBJECT_VALUE FROM ROBERTW.NPTCG_MATRIX_SUBJECT WHERE SUBJECT_CODE IN ('GCSEFULL','GCSESHORT') ORDER BY SUBJECT_ID ASC", con);
             con.Open();
             OracleDataReader dr = cmd.ExecuteReader();
 
@@ -107,45 +74,74 @@ namespace GCSEMatrix.DAO
             return dt;
         }
 
-        public static DataTable GetLearnerDetails(Int32 person_code)
+        public DataSet GetLearnerDetails(string full_name)
         {
+            DataSet LearnerDetails = new DataSet();
+
+
             string conString = ConfigurationManager.ConnectionStrings["ebstrainROConnectionString"].ConnectionString;
             OracleConnection con = new OracleConnection(conString);
-            OracleCommand cmd = new OracleCommand("SELECT person_code, forename || ' ' || surname AS full_name FROM fes.people Where person_code=:person_code", con);
-
             con.Open();
-            cmd.CommandType = CommandType.Text;
 
-            cmd.Parameters.AddWithValue(":person_code",person_code);
 
-            OracleDataReader dr = cmd.ExecuteReader();
+            OracleCommand cmd = new OracleCommand();
+            cmd.CommandText = @"select distinct people.person_code, p.full_name, people.date_of_birth, lr.record_exists from fes.people people
+                                                    LEFT OUTER JOIN (
+                                                    select person_code,
+                                                    forename || ' ' || surname as full_name
+                                                    FROM fes.PEOPLE
+                                                    ) P ON (P.PERSON_CODE = PEOPLE.PERSON_CODE)
+                                                    LEFT OUTER JOIN(
+                                                     SELECT LR.PERSON_CODE,
+                                                     LR.RECORD_EXISTS
+                                                     FROM
+                                                     NPTCG_MATRIX_LEARNER_RESULTS LR
+                                                    )LR ON (LR.PERSON_CODE = PEOPLE.PERSON_CODE)
+                                                    where lower(p.full_name) LIKE lower('" + full_name + @"') order by people.date_of_birth DESC";
+            cmd.Connection = con;
+            OracleDataAdapter LearnerDA = new OracleDataAdapter(cmd);
+            LearnerDetails = new DataSet();
+            LearnerDA.Fill(LearnerDetails);
 
-            DataTable dt = null;
-
-            if (dr.HasRows)
-            {
-
-                dt = new DataTable("fes.people");
-                dt.Load(dr);
-
-                return dt;
-            }
-
-            if (cmd != null)
-            {
-                cmd.Dispose();
-                cmd = null;
-            }
-
-            return dt;
-
+            con.Close();
+            return LearnerDetails;
         }
 
-        public DataTable GetLearnerResults()
+        public DataSet GetGCSELearnerResults(Int32 person_code)
+        {
+            DataSet GCSELeanerResults = new DataSet();
+            string conString = ConfigurationManager.ConnectionStrings["ebstrainROConnectionString"].ConnectionString;
+            OracleConnection con = new OracleConnection(conString);
+            
+                OracleCommand cmd = new OracleCommand();
+                //get all the subjects from the subjects table and all the gcses subjects and grades that the student has
+                cmd.CommandText = @"SELECT SUBJECTS.SUBJECT_NAME, SUBJECTS.SUBJECT_CODE,
+                            Learner_Results.*
+                            FROM ROBERTW.NPTCG_MATRIX_SUBJECT Subjects
+                            LEFT OUTER JOIN(
+                            SELECT
+                            NPTC_R.PERSON_CODE,
+                            NPTC_R.STUDENT_NAME,
+                            nptc_R.UCI_NUMBER,
+                            NPTC_R.GRADE_NAME,
+                            NPTC_R.SUBJECT_NAME AS SUBJECT_TAKEN,
+                            NPTC_R.SUBJECT_CODE AS CODE_OF_SUBJECT,
+                            NPTC_R.RECORD_EXISTS
+                            FROM ROBERTW.NPTCG_MATRIX_LEARNER_RESULTS NPTC_R
+                            ) Learner_Results on (Learner_Results.SUBJECT_TAKEN = subjects.subject_name and subjects.subject_code = learner_results.code_of_subject and Learner_Results.person_code = " + person_code.ToString() + ") WHERE SUBJECTS.SUBJECT_CODE IN ('GCSEFULL','GCSESHORT')";
+                cmd.Connection = con;
+
+                OracleDataAdapter da = new OracleDataAdapter(cmd);
+                GCSELeanerResults = new DataSet();
+                da.Fill(GCSELeanerResults);
+                con.Close();
+                return GCSELeanerResults;
+        }
+        public DataTable GetVocationalLearnerResults(Int32 person_code)
         {
             string conString = ConfigurationManager.ConnectionStrings["ebstrainROConnectionString"].ConnectionString;
             OracleConnection con = new OracleConnection(conString);
-            string query = @"SELECT NPTC_R.PERSON_CODE, NPTC_R.ULI_NUMBER, nptc_r.UCI_NUMBER, NPTC_R.STUDENT_NAME, nptc_R.UCI_NUMBER, nptc_r.Grade_NAME, nptc_r.SUBJECT_NAME, NPTC_R.SUBJECT_CODE FROM ROBERTW.NPTCG_MATRIX_LEARNER_RESULTS NPTC_R WHERE NPTC_R.PERSON_CODE = 236948 AND NPTC_R.SUBJECT_CODE IN ('GCSEFULL','GCSESHORT')";
+            string query = @"SELECT subject_name, subject_code, grade FROM NPTCG_MATRIX_LEARNER_RESULTS WHERE person_code =" + person_code + " AND SUBJECT_CODE IN ('ONAT-FA2','BTEC-AW2','BTEC-CE2','BTEC-EC2','BTEC-D12','ONAT-AW2','ONAT-FC2')";
 
             OracleCommand cmd = new OracleCommand(query, con);
 
@@ -157,7 +153,7 @@ namespace GCSEMatrix.DAO
             if (dr.HasRows)
             {
 
-                dt = new DataTable("ROBERTW.nPTCG_MATRIX_LEARNER_RESULTS");
+                dt = new DataTable("ROBERTW.NPTCG_MATRIX_LEARNER_RESULTS");
                 dt.Load(dr);
 
                 return dt;
@@ -170,7 +166,60 @@ namespace GCSEMatrix.DAO
             }
 
             return dt;
+        }
 
+
+        public DataSet GetExistingNonEBSLearnerDetails(string full_name)
+        {
+            DataSet NonEBSLearnerDetailsSet = new DataSet();
+
+
+            string conString = ConfigurationManager.ConnectionStrings["ebstrainROConnectionString"].ConnectionString;
+            OracleConnection con = new OracleConnection(conString);
+            con.Open();
+
+            OracleCommand cmd = new OracleCommand();
+            cmd.CommandText = @"select distinct UCI_NUMBER, student_name, PERSON_CODE from robertw.nptcg_matrix_learner_results where lower(student_name) LIKE lower('" + full_name + @"') AND person_code = 0";
+            cmd.Connection = con;
+            OracleDataAdapter LearnerDA = new OracleDataAdapter(cmd);
+            NonEBSLearnerDetailsSet = new DataSet();
+            LearnerDA.Fill(NonEBSLearnerDetailsSet);
+
+            con.Close();
+            return NonEBSLearnerDetailsSet;
+        }
+
+        public DataSet GetNonEBSLearnerGCSEResults(string UCI_NUMBER)
+        {
+            DataSet NonGCSELearnerResultSet = new DataSet();
+            string conString = ConfigurationManager.ConnectionStrings["ebstrainROConnectionString"].ConnectionString;
+            OracleConnection con = new OracleConnection(conString);
+
+            OracleCommand cmd = new OracleCommand();
+            //get all the subjects from the subjects table and all the gcses subjects and grades that the student has
+            cmd.CommandText = @"SELECT SUBJECTS.SUBJECT_NAME, SUBJECTS.SUBJECT_CODE,
+                            Learner_Results.person_code, Learner_Results.student_name, Learner_Results.UCI_Number,
+                            Learner_Results.SUBJECT_TAKEN, Learner_Results.Grade_Name, Learner_Results.Subject_Taken, Learner_Results.Code_Of_Subject
+                            FROM ROBERTW.NPTCG_MATRIX_SUBJECT Subjects
+                            LEFT OUTER JOIN(
+                            SELECT
+                            NPTC_R.PERSON_CODE,
+                            NPTC_R.STUDENT_NAME,
+                            nptc_R.UCI_NUMBER,
+                            NPTC_R.GRADE_NAME,
+                            NPTC_R.SUBJECT_NAME AS SUBJECT_TAKEN,
+                            NPTC_R.SUBJECT_CODE AS CODE_OF_SUBJECT
+                            FROM ROBERTW.NPTCG_MATRIX_LEARNER_RESULTS NPTC_R
+                            ) Learner_Results on (Learner_Results.SUBJECT_TAKEN = subjects.subject_name and subjects.subject_code = learner_results.code_of_subject and Learner_Results.UCI_NUMBER = '" + UCI_NUMBER.ToString() + "')  WHERE SUBJECTS.SUBJECT_CODE IN ('GCSEFULL','GCSESHORT')";
+            cmd.Connection = con;
+
+            OracleDataAdapter da = new OracleDataAdapter(cmd);
+            NonGCSELearnerResultSet = new DataSet();
+            da.Fill(NonGCSELearnerResultSet);
+            con.Close();
+            return NonGCSELearnerResultSet;
         }
     }
+
+
 }

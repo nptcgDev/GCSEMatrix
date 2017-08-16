@@ -4,7 +4,8 @@ using System.Linq;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
-using System.Data.OracleClient;
+using Oracle.DataAccess;
+using Oracle.DataAccess.Client;
 using System.Data;
 using System.Configuration;
 using GCSEMatrix.DAO;
@@ -23,7 +24,7 @@ namespace GCSEMatrix
                      txtStudentID.Text = Person_Code;
                      Int32 person_code = Convert.ToInt32(txtStudentID.Text);
                      get_user_details(person_code);
-                     ValidatesUserFields();
+                     EnableUserFields();
                   }
                  catch (Exception ex)
                  {
@@ -44,9 +45,9 @@ namespace GCSEMatrix
             return Person_Code;
         }
 
-        public void ValidatesUserFields()
+        public void EnableUserFields()
         {
-            //enables UCI, ULI textboxes if none can be found in EBS
+            //enables UCI, ULI textboxes if data cannot be found in EBS
             if (txtUCI.Text == "")
             {
                 txtUCI.Enabled = true;
@@ -64,6 +65,20 @@ namespace GCSEMatrix
             {
                 txtULI.Enabled = false;
             }
+
+            if (txtStudentName.Text == "")
+            {
+                txtStudentName.Enabled = true;
+            }
+            else
+            {
+                    txtStudentName.Enabled = false;
+            }
+            if (txtStudentID.Text == "0")
+            {
+                lblStudentID.Visible = false;
+                txtStudentID.Visible = false;
+            }
         }
         protected void BtnSaveResults_Click(object sender, EventArgs e)
         {
@@ -79,7 +94,7 @@ namespace GCSEMatrix
                 Label Subject_Name = ri.FindControl("lblSubjectName") as Label;
                 DropDownList Grade_Name = ri.FindControl("DDLGCSEGRADE") as DropDownList;
                 string Results_Status =rdiolstResults_Status.SelectedValue;
-
+                
                 if (Grade_Name.Text == "Select Grade")
                 {
                     // dont insert row
@@ -90,12 +105,14 @@ namespace GCSEMatrix
 
                 }
 
-
             }
             insertVocationalResults();
             BtnSaveResults.Visible = false;
             BtnUpdateResults.Visible = true;
             BtnViewReport.Visible = true;
+            BtnRedirectToIndex.Visible = true;
+         //   Response.Write("<script>alert('Results Have Been Added.');</script>");
+            Response.Write("<div class='container'><div class='alert alert-success'><p>Results have been Added</p></div></div>");
 
         }
 
@@ -103,73 +120,77 @@ namespace GCSEMatrix
         {
             Int32 Person_Code = Convert.ToInt32(txtStudentID.Text);
             // if a subject or a grade has not been selected for this DDL do not insert this data
-            if (DDLVocationalSubject1.Text != "Select Subject" && DDLVocationalGrade1.Text != "Select Grade")
-            {
-                InsertQueryString insertVocs = new InsertQueryString();
-                insertVocs.InsertLearnerResults(Person_Code, txtStudentName.Text, txtULI.Text, txtUCI.Text, DDLVocationalGrade1.SelectedValue, DDLVocationalSubject1.SelectedValue, DDLVocationalSubject1.SelectedItem.Text,rdiolstResults_Status.SelectedValue, HttpContext.Current.User.Identity.Name);
-
-            }
-            else
+            if (DDLVocationalSubject1.SelectedValue == "SELECT" || DDLVocationalGrade1.SelectedValue == "SELECT")
             {
                 // Ignore this and carry on below
             }
-
-            if (DDLVocationalSubject2.Text != "Select Subject" && DDLVocationalGrade2.Text != "Select Grade")
+            else
             {
+                
                 InsertQueryString insertVocs = new InsertQueryString();
-                insertVocs.InsertLearnerResults(Person_Code, txtStudentName.Text, txtULI.Text, txtUCI.Text, DDLVocationalGrade2.SelectedValue, DDLVocationalSubject2.SelectedValue, DDLVocationalSubject2.SelectedItem.Text,rdiolstResults_Status.SelectedValue, HttpContext.Current.User.Identity.Name);
+                insertVocs.InsertLearnerResults(Person_Code, txtStudentName.Text, txtULI.Text, txtUCI.Text, DDLVocationalGrade1.SelectedValue, DDLVocationalSubject1.SelectedValue, DDLVocationalSubject1.SelectedItem.Text, rdiolstResults_Status.SelectedValue, HttpContext.Current.User.Identity.Name);
+
+            }
+
+            if (DDLVocationalSubject2.SelectedValue == "SELECT" || DDLVocationalGrade2.SelectedValue == "SELECT")
+            {
 
             }
             else
             {
-            }
-            if (DDLVocationalSubject3.Text != "Select Subject" && DDLVocationalGrade3.Text != "Select Grade")
-            {
                 InsertQueryString insertVocs = new InsertQueryString();
-                insertVocs.InsertLearnerResults(Person_Code, txtStudentName.Text, txtULI.Text, txtUCI.Text, DDLVocationalGrade3.SelectedValue, DDLVocationalSubject3.SelectedValue, DDLVocationalSubject3.SelectedItem.Text,rdiolstResults_Status.SelectedValue, HttpContext.Current.User.Identity.Name);
+                insertVocs.InsertLearnerResults(Person_Code, txtStudentName.Text, txtULI.Text, txtUCI.Text, DDLVocationalGrade2.SelectedValue, DDLVocationalSubject2.SelectedValue, DDLVocationalSubject2.SelectedItem.Text, rdiolstResults_Status.SelectedValue, HttpContext.Current.User.Identity.Name);
+
+            }
+            if (DDLVocationalSubject3.SelectedValue == "SELECT" || DDLVocationalGrade3.SelectedValue == "SELECT")
+            {
 
             }
             else
             {
-            }
-            if (DDLVocationalSubject4.Text != "Select Subject" && DDLVocationalGrade4.Text != "Select Grade")
-            {
                 InsertQueryString insertVocs = new InsertQueryString();
-                insertVocs.InsertLearnerResults(Person_Code, txtStudentName.Text, txtULI.Text, txtUCI.Text, DDLVocationalGrade4.SelectedValue, DDLVocationalSubject4.SelectedValue, DDLVocationalSubject4.SelectedItem.Text,rdiolstResults_Status.SelectedValue, HttpContext.Current.User.Identity.Name);
+                insertVocs.InsertLearnerResults(Person_Code, txtStudentName.Text, txtULI.Text, txtUCI.Text, DDLVocationalGrade3.SelectedValue, DDLVocationalSubject3.SelectedValue, DDLVocationalSubject3.SelectedItem.Text, rdiolstResults_Status.SelectedValue, HttpContext.Current.User.Identity.Name);
+
+            }
+            if (DDLVocationalSubject4.SelectedValue == "SELECT" || DDLVocationalGrade4.SelectedValue == "SELECT")
+            {
 
             }
             else
             {
-            }
-            if (DDLVocationalSubject5.Text != "Select Subject" && DDLVocationalGrade5.Text != "Select Grade")
-            {
                 InsertQueryString insertVocs = new InsertQueryString();
-                insertVocs.InsertLearnerResults(Person_Code, txtStudentName.Text, txtULI.Text, txtUCI.Text, DDLVocationalGrade5.SelectedValue, DDLVocationalSubject5.SelectedValue, DDLVocationalSubject5.SelectedItem.Text,rdiolstResults_Status.SelectedValue, HttpContext.Current.User.Identity.Name);
+                insertVocs.InsertLearnerResults(Person_Code, txtStudentName.Text, txtULI.Text, txtUCI.Text, DDLVocationalGrade4.SelectedValue, DDLVocationalSubject4.SelectedValue, DDLVocationalSubject4.SelectedItem.Text, rdiolstResults_Status.SelectedValue, HttpContext.Current.User.Identity.Name);
+
+            }
+            if (DDLVocationalSubject5.SelectedValue == "SELECT" || DDLVocationalGrade5.SelectedValue == "SELECT")
+            {
 
             }
             else
             {
+                InsertQueryString insertVocs = new InsertQueryString();
+                insertVocs.InsertLearnerResults(Person_Code, txtStudentName.Text, txtULI.Text, txtUCI.Text, DDLVocationalGrade5.SelectedValue, DDLVocationalSubject5.SelectedValue, DDLVocationalSubject5.SelectedItem.Text, rdiolstResults_Status.SelectedValue, HttpContext.Current.User.Identity.Name);
 
             }
-            if (DDLVocationalSubject6.Text != "Select Subject" && DDLVocationalGrade6.Text != "Select Grade")
+            if (DDLVocationalSubject6.SelectedValue == "SELECT" || DDLVocationalGrade6.SelectedValue == "SELECT")
             {
-                InsertQueryString insertVocs = new InsertQueryString();
-                insertVocs.InsertLearnerResults(Person_Code, txtStudentName.Text, txtULI.Text, txtUCI.Text, DDLVocationalGrade6.SelectedValue, DDLVocationalSubject6.SelectedValue, DDLVocationalSubject6.SelectedItem.Text,rdiolstResults_Status.SelectedValue, HttpContext.Current.User.Identity.Name);
 
             }
             else
             {
-                // Ignore this and carry on below
+                InsertQueryString insertVocs = new InsertQueryString();
+                insertVocs.InsertLearnerResults(Person_Code, txtStudentName.Text, txtULI.Text, txtUCI.Text, DDLVocationalGrade6.SelectedValue, DDLVocationalSubject6.SelectedValue, DDLVocationalSubject6.SelectedItem.Text, rdiolstResults_Status.SelectedValue, HttpContext.Current.User.Identity.Name);
+
             }
 
-            if (DDLVocationalSubject7.Text != "Select Subject" && DDLVocationalGrade7.Text != "Select Grade")
+            if (DDLVocationalSubject7.SelectedValue == "SELECT" || DDLVocationalGrade7.SelectedValue == "SELECT")
             {
-                InsertQueryString insertVocs = new InsertQueryString();
-                insertVocs.InsertLearnerResults(Person_Code, txtStudentName.Text, txtULI.Text, txtUCI.Text, DDLVocationalGrade7.SelectedValue, DDLVocationalSubject7.SelectedValue, DDLVocationalSubject7.SelectedItem.Text,rdiolstResults_Status.SelectedValue, HttpContext.Current.User.Identity.Name);
 
             }
             else
             {
+                InsertQueryString insertVocs = new InsertQueryString();
+                insertVocs.InsertLearnerResults(Person_Code, txtStudentName.Text, txtULI.Text, txtUCI.Text, DDLVocationalGrade7.SelectedValue, DDLVocationalSubject7.SelectedValue, DDLVocationalSubject7.SelectedItem.Text, rdiolstResults_Status.SelectedValue, HttpContext.Current.User.Identity.Name);
             }
         }
         public void get_user_details(Int32 person_code)
@@ -267,15 +288,36 @@ namespace GCSEMatrix
             FilterGrades(DDLVocationalSubject7, DDLVocationalGrade7);
         }
 
+        protected void BtnViewReport_Click(object sender, EventArgs e)
+        {
+            string pageurl = "http://10.100.36.24/ReportServer/Pages/ReportViewer.aspx?%2fColeg+Powys%2fSkills+Matrix%2fmatrix&UCI_NUMBER=" + txtUCI.Text;
+            Response.Write("<script> window.open('" + pageurl + "','_blank'); </script>");
+        }
+
+        protected void RedirectToUpdatePage(Int32 Person_Code)
+        {
+            foreach (RepeaterItem ri in Repeater1.Items)
+            {
+                DropDownList Grade_Name = ri.FindControl("DDLGCSEGRADE") as DropDownList;
+                if (Grade_Name.Text != "Select Grade")
+                {
+                    // redirect to the update page if they already have a grade
+                    this.Response.Redirect("~/UpdateDetails.aspx?person_code=45608");
+                }
+                else
+                {
+                }
+            }
+        }
+
         protected void BtnUpdateResults_Click(object sender, EventArgs e)
         {
-
             Int32 Person_Code_Parameter = Convert.ToInt32(txtStudentID.Text);
 
             // delete everything in the learner results first, then insert new values (to stop duplicate data)
             InsertQueryString delete = new InsertQueryString();
             delete.DeleteLearnerResults(Person_Code_Parameter);
-            
+
             foreach (RepeaterItem ri in Repeater1.Items)
             {
 
@@ -283,6 +325,7 @@ namespace GCSEMatrix
                 string StudentName = txtStudentName.Text;
                 string ULI = txtULI.Text;
                 string UCI = txtUCI.Text;
+                DateTime Updated_Date = DateTime.Now;
                 Label Subject_Code = ri.FindControl("lblSubjectType") as Label;
                 Label Subject_Name = ri.FindControl("lblSubjectName") as Label;
                 DropDownList Grade_Name = ri.FindControl("DDLGCSEGRADE") as DropDownList;
@@ -292,6 +335,7 @@ namespace GCSEMatrix
                 {
                     // dont insert subjects with no grade
                 }
+                
                 else
                 {
                     InsertQueryString insertGCSEs = new InsertQueryString();
@@ -299,12 +343,14 @@ namespace GCSEMatrix
                 }
             }
             insertVocationalResults();
+          //  Response.Write("<script>alert('Results Have Been Updated.');</script>");
+            Response.Write("<div class='container'><div class='alert alert-success'><p>Results have been Updated</p></div></div>");
+
         }
 
-        protected void BtnViewReport_Click(object sender, EventArgs e)
+        protected void BtnRedirectToIndex_Click(object sender, EventArgs e)
         {
-            Response.Redirect("http://10.100.36.24/ReportServer/Pages/ReportViewer.aspx?%2fColeg+Powys%2fSkills+Matrix%2fmatrix&rs:Format=PDF&PERSON_CODE=" + txtStudentID.Text);
-
+            this.Response.Redirect("~/Index.aspx");
         }
 
         }
