@@ -1,107 +1,95 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="index.aspx.cs" Inherits="GCSEMatrix.index" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="index.aspx.cs" MasterPageFile="~/Site.Master" Inherits="GCSEMatrix.Index" %>
 
-<!DOCTYPE html>
-    <link href="Content/bootstrap.css" rel="stylesheet" type="text/css" />
-    <link href="Content/custom.css" rel="stylesheet" type="text/css" />
-    <script src="Scripts/jquery-3.1.1.js"></script>
-    <script src="Scripts/bootstrap.js"></script>
+<%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit" TagPrefix="ajaxToolkit" %>
+<%@ MasterType VirtualPath="~/Site.Master" %>
 
-<html xmlns="http://www.w3.org/1999/xhtml">
-<head id="Head1" runat="server">
-    <title>NPTC Group - GCSE Matrix</title>
-</head>
-<body>
-    <form id="form1" runat="server">
-            <!-- Navigation -->
-    <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
-        <div class="container">
-            <!-- Brand and toggle get grouped for better mobile display -->
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
-                    <span class="sr-only">Toggle navigation</span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                <img style="width: 65%;" alt="nptc group logo" src="nptc-logo.png"/>
+<asp:Content ID="CntMainContent" ContentPlaceHolderID="CphMainContent" runat="server">
 
+    <asp:Literal runat="server" ID="litPersonCode" Visible="false" />
+    <asp:Label runat="server" ID="lbPersonCode" Visible="false" />
+    <h1>GCSE Matrix</h1>
+<%--    <div class="row">
+        <div style="padding-left: 0px !important;" class="col-lg-12">
+            <p class="lead">Please Enter Student ID</p>
+            <div style="padding-left: 0px !important;" class="col-lg-6">
+                <div class="input-group">
+                    <asp:TextBox ID="txtstudent_id" runat="server" CssClass="form-control"></asp:TextBox>
+                    <span class="input-group-btn">
+                        <asp:Button ID="btnSearch" runat="server" Text="Search" OnClick="btnSearch_Click" CssClass="btn btn-default" />
+                    </span>
+                </div>
+                <!-- /input-group -->
             </div>
-            <!-- Collect the nav links, forms, and other content for toggling -->
-            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-                <ul class="nav navbar-nav">
-                    <li>
-                        <a href="#"></a>
-                    </li>
-                    <li>
-                        <a href="#"></a>
-                    </li>
-                    <li>
-                        <a href="#"></a>
-                    </li>
-                </ul>
-                <asp:Label style="color: white; margin-top:15px; float: right;" ID="lblUser" runat="server">
-                     <% Response.Write(HttpContext.Current.User.Identity.Name); %>
-                 </asp:Label>
-            </div>
-            <!-- /.navbar-collapse -->
+            <!-- /.col-lg-6 -->
         </div>
-        <!-- /.container -->
-    </nav>           
-          <div class="container">
-              <div class="alert alert-success">
-                <p>If you wish to update the details of an applicant who is not on EBS, then <a href="SearchNonEBSLearners.aspx">Click this link</a></p>
-            </div>
-                <div class="row">
-            <div style="padding-left: 0px !important;" class="col-lg-12">
-                <h1>GCSE Matrix</h1>
-                <p class="lead">Please Enter Student Name</p>
-                <div style="padding-left: 0px !important;" class="col-lg-6">
-                    <div class="input-group">
-                            <asp:TextBox ID="txtstudent_name" runat="server" required CssClass="form-control"></asp:TextBox>
-                      <span class="input-group-btn">
-                          <asp:Button ID="btnSearch" runat="server" Text="Search" OnClick="btnSearch_Click" CssClass="btn btn-default" />
-                      </span>
-                    </div><!-- /input-group -->
-                  </div><!-- /.col-lg-6 -->
-            </div>
-        </div>
-        <br /><br />
-        <asp:ObjectDataSource ID="ObjectDataSource1" runat="server" SelectMethod="GetLearnerDetails" TypeName="GCSEMatrix.DAO.ReturnData">
-            <SelectParameters>
-                <asp:ControlParameter ControlID="txtstudent_name" Name="full_name" PropertyName="Text" Type="String" />
-            </SelectParameters>
-        </asp:ObjectDataSource>
-        <asp:Repeater ID="Repeater1" runat="server" DataSourceID="ObjectDataSource1" OnItemDataBound="Repeater1_ItemDataBound">
-            <HeaderTemplate>
-                <table class="table table-bordered table-inverse">
-                    <tr>
-                        <th>Person Code</th>
-                        <th>Image</th>
-                         <th>Full Name</th>
-                        <th>Date Of Birth</th>
-                        <th>Action</th>
-                    </tr>
-            </HeaderTemplate>
-            <ItemTemplate>
+    </div>--%>
+    <br />
+    <br />
+    <asp:ObjectDataSource ID="odsGetLearnerDetails" runat="server" SelectMethod="GetLearnerDetails" TypeName="GCSEMatrix.DAO.ReturnData">
+        <SelectParameters>
+            <asp:ControlParameter ControlID="lbPersonCode" Name="person_code" PropertyName="Text" Type="String" />
+        </SelectParameters>
+    </asp:ObjectDataSource>
+    <asp:Repeater ID="RptSearchResults" runat="server" DataSourceID="odsGetLearnerDetails">
+        <HeaderTemplate>
+            <table class="table table-bordered table-inverse">
                 <tr>
-                    <td><%# Eval("person_code") %></td>
-                    <td><asp:Image ID="learnerImage" CssClass="img-rounded" runat="server" ImageAlign="Left" ImageUrl='<%# "https://ebsagent.ad.nptcgroup.ac.uk//personimage.aspx?personcode=" +  Eval("person_code")  %>' Height="60px" AlternateText='' /></td>
-                    <td><%# Eval("full_name") %> </td>
-                    <td><%# Eval("date_of_birth","{0:d}") %></td>
-                    <td><asp:HyperLink ID="lnkDetails" runat="server" CssClass="btn btn-default" NavigateUrl='<%#"Default.aspx?person_code=" + Eval("person_code") %>'>Add Results</asp:HyperLink>
-                        <asp:HyperLink ID="lnkUpdateDetails" runat="server" CssClass="btn btn-default" NavigateUrl='<%#"UpdateDetails.aspx?person_code=" + Eval("person_code") %>'>Update Results</asp:HyperLink>
-                    </td>
-                    <td class="sr-only"><asp:Label ID="lblRecordExists" runat="server" Text='<%# Eval("record_exists") %>'></asp:Label></td>
+                    <th>Person Code</th>
+                    <th>Image</th>
+                    <th>Full Name</th>
+                    <th>Date Of Birth</th>
+                    <th>Action</th>
                 </tr>
-            </ItemTemplate>
-            <FooterTemplate>
-              </table>
-                        <%-- Label used for send people to matrix page with default person code (0) --%>
-                <asp:HyperLink ID="lnkNewStudent" NavigateUrl='<%#"Default.aspx?person_code=0"%>' runat="server">If this is a new applicant and has no record in EBS. Please click this Link to add the results.</asp:HyperLink>
-            </FooterTemplate>
-        </asp:Repeater>
-        </div>
-    </form>
-</body>
+        </HeaderTemplate>
+        <ItemTemplate>
+            <tr>
+                <td><%# Eval("person_code") %></td>
+                <td>
+                    <asp:Image ID="learnerImage" CssClass="img-rounded" runat="server" ImageAlign="Left" ImageUrl='<%# "https://ebsagent.ad.nptcgroup.ac.uk//personimage.aspx?personcode=" +  Eval("person_code")  %>' Height="60px" AlternateText='' /></td>
+                <td><%# Eval("full_name") %> </td>
+                <td><%# Eval("date_of_birth","{0:d}") %></td>
+                <td>
+                    <asp:HyperLink ID="lnkAddResults" runat="server" CssClass="btn btn-default" NavigateUrl='<%#"AddResults.aspx?personCode=" + Eval("person_code") %>'>Add Results</asp:HyperLink>
+                    <%--                        <asp:HyperLink ID="lnkUpdateResults" runat="server" CssClass="btn btn-default" NavigateUrl='<%#"UpdateResults.aspx?person_code=" + Eval("person_code") %>'>Update Results</asp:HyperLink>--%>
+                </td>
+                <td class="sr-only">
+                    <asp:Label ID="lblRecordExists" runat="server" Text='<%# Eval("record_exists") %>'></asp:Label></td>
+            </tr>
+        </ItemTemplate>
+        <FooterTemplate>
+            <%-- Label used for send people to matrix page with default person code (0) --%>
+        </FooterTemplate>
+    </asp:Repeater>
+    <asp:Panel ID="PnlNoResults" runat="server" Style="display: none; border-style: solid; border-width: thin; background-color: #ffffff; border-color: #FFDBCA">
 
-</html>
+        <div class="modal-header">
+            <h1>Alert</h1>
+        </div>
+        <div class="modal-body">
+           <p class="lead">Does the learner have any results that need to be entered onto the GCSE Matrix?</p>
+        </div>
+        <div class="modal-footer">
+            <asp:Button ID="BtnYesResults" CssClass="btn btn-primary" runat="server" Text="Yes" OnClick="BtnYesResults_Click" />
+            <asp:Button ID="BtnNoResults" CssClass="btn btn-primary" runat="server" Text="No" OnClick="BtnNoResults_Click" />
+        </div>
+
+        <ajaxToolkit:ModalPopupExtender ID="modalPopupEx" runat="server" PopupControlID="PnlNoResults"
+            TargetControlID="invisibleTarget" CancelControlID="BtnYesResults"
+            BackgroundCssClass="modal-content">
+        </ajaxToolkit:ModalPopupExtender>
+
+        <ajaxToolkit:AnimationExtender ID="popupAnimation" runat="server"
+            TargetControlID="invisibleTarget">
+
+            <Animations>
+                <OnLoad>
+                    <Parallel AnimationTarget="PnlNoResults"
+                    Duration="0.3" Fps="25">
+                    <FadeIn />
+                    </Parallel>
+                </OnLoad>
+            </Animations>
+        </ajaxToolkit:AnimationExtender>
+    </asp:Panel>
+    <asp:Label ID="invisibleTarget" runat="server" Style="display: none" Font-Size="Large" /><br />
+</asp:Content>

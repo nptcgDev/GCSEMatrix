@@ -10,69 +10,108 @@
 namespace GCSEMatrix {
     
     
-    public partial class index {
+    public partial class Index {
         
         /// <summary>
-        /// Head1 control.
+        /// litPersonCode control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlHead Head1;
+        protected global::System.Web.UI.WebControls.Literal litPersonCode;
         
         /// <summary>
-        /// form1 control.
+        /// lbPersonCode control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlForm form1;
+        protected global::System.Web.UI.WebControls.Label lbPersonCode;
         
         /// <summary>
-        /// lblUser control.
+        /// odsGetLearnerDetails control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblUser;
+        protected global::System.Web.UI.WebControls.ObjectDataSource odsGetLearnerDetails;
         
         /// <summary>
-        /// txtstudent_name control.
+        /// RptSearchResults control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtstudent_name;
+        protected global::System.Web.UI.WebControls.Repeater RptSearchResults;
         
         /// <summary>
-        /// btnSearch control.
+        /// PnlNoResults control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btnSearch;
+        protected global::System.Web.UI.WebControls.Panel PnlNoResults;
         
         /// <summary>
-        /// ObjectDataSource1 control.
+        /// BtnYesResults control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.ObjectDataSource ObjectDataSource1;
+        protected global::System.Web.UI.WebControls.Button BtnYesResults;
         
         /// <summary>
-        /// Repeater1 control.
+        /// BtnNoResults control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Repeater Repeater1;
+        protected global::System.Web.UI.WebControls.Button BtnNoResults;
+        
+        /// <summary>
+        /// modalPopupEx control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::AjaxControlToolkit.ModalPopupExtender modalPopupEx;
+        
+        /// <summary>
+        /// popupAnimation control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::AjaxControlToolkit.AnimationExtender popupAnimation;
+        
+        /// <summary>
+        /// invisibleTarget control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label invisibleTarget;
+        
+        /// <summary>
+        /// Master property.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated property.
+        /// </remarks>
+        public new GCSEMatrix.Site Master {
+            get {
+                return ((GCSEMatrix.Site)(base.Master));
+            }
+        }
     }
 }

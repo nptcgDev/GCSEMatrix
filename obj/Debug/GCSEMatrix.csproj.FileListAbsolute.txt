@@ -3,3 +3,17 @@ C:\Users\willrob\documents\visual studio 2012\Projects\GCSEMatrix\GCSEMatrix\bin
 C:\Users\willrob\documents\visual studio 2012\Projects\GCSEMatrix\GCSEMatrix\obj\Debug\GCSEMatrix.dll
 C:\Users\willrob\documents\visual studio 2012\Projects\GCSEMatrix\GCSEMatrix\obj\Debug\GCSEMatrix.pdb
 C:\Users\willrob\documents\visual studio 2012\Projects\GCSEMatrix\GCSEMatrix\obj\Debug\GCSEMatrix.csprojResolveAssemblyReference.cache
+N:\Repos\GCSEMatrix\GCSEMatrix\bin\GCSEMatrix.dll
+N:\Repos\GCSEMatrix\GCSEMatrix\bin\GCSEMatrix.pdb
+N:\Repos\GCSEMatrix\GCSEMatrix\bin\AjaxControlToolkit.dll
+N:\Repos\GCSEMatrix\GCSEMatrix\obj\Debug\GCSEMatrix.dll
+N:\Repos\GCSEMatrix\GCSEMatrix\obj\Debug\GCSEMatrix.pdb
+N:\Repos\GCSEMatrix\GCSEMatrix\bin\Oracle.ManagedDataAccess.dll
+N:\Repos\GCSEMatrix\GCSEMatrix\obj\Debug\GCSEMatrix.csprojResolveAssemblyReference.cache
+J:\DEV\Source Code\Live WebApps\GCSEMatrix\GCSEMatrix\obj\Debug\GCSEMatrix.dll
+J:\DEV\Source Code\Live WebApps\GCSEMatrix\GCSEMatrix\bin\GCSEMatrix.dll
+J:\DEV\Source Code\Live WebApps\GCSEMatrix\GCSEMatrix\bin\GCSEMatrix.pdb
+J:\DEV\Source Code\Live WebApps\GCSEMatrix\GCSEMatrix\bin\AjaxControlToolkit.dll
+J:\DEV\Source Code\Live WebApps\GCSEMatrix\GCSEMatrix\bin\Oracle.ManagedDataAccess.dll
+J:\DEV\Source Code\Live WebApps\GCSEMatrix\GCSEMatrix\obj\Debug\GCSEMatrix.pdb
+J:\DEV\Source Code\Live WebApps\GCSEMatrix\GCSEMatrix\obj\Debug\GCSEMatrix.csprojResolveAssemblyReference.cache

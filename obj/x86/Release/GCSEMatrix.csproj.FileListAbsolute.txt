@@ -3,3 +3,33 @@ C:\Users\willrob\documents\visual studio 2012\Projects\GCSEMatrix\GCSEMatrix\bin
 C:\Users\willrob\documents\visual studio 2012\Projects\GCSEMatrix\GCSEMatrix\obj\x86\Release\GCSEMatrix.dll
 C:\Users\willrob\documents\visual studio 2012\Projects\GCSEMatrix\GCSEMatrix\obj\x86\Release\GCSEMatrix.pdb
 C:\Users\willrob\documents\visual studio 2012\Projects\GCSEMatrix\GCSEMatrix\obj\x86\Release\GCSEMatrix.csprojResolveAssemblyReference.cache
+N:\Repos\GCSEMatrix\GCSEMatrix\bin\GCSEMatrix.dll
+N:\Repos\GCSEMatrix\GCSEMatrix\bin\GCSEMatrix.pdb
+N:\Repos\GCSEMatrix\GCSEMatrix\bin\Oracle.DataAccess.dll
+N:\Repos\GCSEMatrix\GCSEMatrix\obj\x86\Release\GCSEMatrix.dll
+N:\Repos\GCSEMatrix\GCSEMatrix\obj\x86\Release\GCSEMatrix.pdb
+N:\Repos\GCSEMatrix\GCSEMatrix\bin\log4net.dll
+N:\Repos\GCSEMatrix\GCSEMatrix\bin\log4net.xml
+N:\Repos\GCSEMatrix\GCSEMatrix\bin\GCSEMatrix.dll.config
+N:\Repos\GCSEMatrix\GCSEMatrix\bin\AjaxControlToolkit.dll
+N:\Repos\GCSEMatrix\GCSEMatrix\bin\Microsoft.ReportViewer.WebForms.dll
+N:\Repos\GCSEMatrix\GCSEMatrix\bin\de\Microsoft.ReportViewer.WebForms.resources.dll
+N:\Repos\GCSEMatrix\GCSEMatrix\bin\es\Microsoft.ReportViewer.WebForms.resources.dll
+N:\Repos\GCSEMatrix\GCSEMatrix\bin\fr\Microsoft.ReportViewer.WebForms.resources.dll
+N:\Repos\GCSEMatrix\GCSEMatrix\bin\it\Microsoft.ReportViewer.WebForms.resources.dll
+N:\Repos\GCSEMatrix\GCSEMatrix\bin\ja\Microsoft.ReportViewer.WebForms.resources.dll
+N:\Repos\GCSEMatrix\GCSEMatrix\bin\ko\Microsoft.ReportViewer.WebForms.resources.dll
+N:\Repos\GCSEMatrix\GCSEMatrix\bin\pt\Microsoft.ReportViewer.WebForms.resources.dll
+N:\Repos\GCSEMatrix\GCSEMatrix\bin\ru\Microsoft.ReportViewer.WebForms.resources.dll
+N:\Repos\GCSEMatrix\GCSEMatrix\bin\zh-CHS\Microsoft.ReportViewer.WebForms.resources.dll
+N:\Repos\GCSEMatrix\GCSEMatrix\bin\zh-CHT\Microsoft.ReportViewer.WebForms.resources.dll
+N:\Repos\GCSEMatrix\GCSEMatrix\obj\x86\Release\GCSEMatrix.csprojAssemblyReference.cache
+N:\Repos\GCSEMatrix\GCSEMatrix\obj\x86\Release\GCSEMatrix.csproj.CoreCompileInputs.cache
+N:\Repos\GCSEMatrix\GCSEMatrix\obj\x86\Release\GCSEMatrix.csproj.CopyComplete
+J:\DEV\Source Code\Work in Progress\GCSEMatrix\GCSEMatrix\bin\GCSEMatrix.dll
+J:\DEV\Source Code\Work in Progress\GCSEMatrix\GCSEMatrix\bin\GCSEMatrix.pdb
+J:\DEV\Source Code\Work in Progress\GCSEMatrix\GCSEMatrix\bin\AjaxControlToolkit.dll
+J:\DEV\Source Code\Work in Progress\GCSEMatrix\GCSEMatrix\bin\Oracle.ManagedDataAccess.dll
+J:\DEV\Source Code\Work in Progress\GCSEMatrix\GCSEMatrix\obj\x86\Release\GCSEMatrix.csprojResolveAssemblyReference.cache
+J:\DEV\Source Code\Work in Progress\GCSEMatrix\GCSEMatrix\obj\x86\Release\GCSEMatrix.dll
+J:\DEV\Source Code\Work in Progress\GCSEMatrix\GCSEMatrix\obj\x86\Release\GCSEMatrix.pdb
