@@ -12,8 +12,8 @@ namespace GCSEMatrix
             if (!IsPostBack)
             {
 
-                CommonCode getPersonCode = new CommonCode();
-              // lbPersonCode.Text = "255577";
+               CommonCode getPersonCode = new CommonCode();
+               // lbPersonCode.Text = "307424";
                 lbPersonCode.Text = getPersonCode.GetPersonCodeFromUrl();
                 modalPopupEx.Show();
             }
@@ -55,12 +55,25 @@ namespace GCSEMatrix
                 var learnerHasNoResultsCheck = (Label)ri.FindControl("lblResultsStatus");
                 var resultsPageLink = (HyperLink)ri.FindControl("lnkAddResults");
                 var noResultsCheckMessage = (Label)ri.FindControl("lblNoResultsMessage");
+                var learnerHasExistingResults = (Label)ri.FindControl("lbExistingResults");
+                var showExistingEntriesLink = (HyperLink)ri.FindControl("lnkViewExistingResults");
 
                 if (learnerHasNoResultsCheck.Text == "0")
                 {
 
                     resultsPageLink.Visible = false;
                     noResultsCheckMessage.Visible = true;
+                }
+
+                if (learnerHasExistingResults.Text == "1")
+                {
+                    showExistingEntriesLink.Visible = true;
+
+                }
+
+                else
+                {
+                    showExistingEntriesLink.Visible = false;
                 }
 
             }

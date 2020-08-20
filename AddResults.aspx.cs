@@ -59,7 +59,7 @@ namespace GCSEMatrix
 
         protected void BtnViewReport_Click(object sender, EventArgs e)
         {
-            var pageurl = "http://nth-mis-app-01/ReportServer/Pages/ReportViewer.aspx?%2fColeg+Powys%2fSkills+Matrix%2fmatrix-slip-1920&PERSON_CODE=" + txtStudentID.Text;// + "&rs:Format=PDF";
+            var pageurl = "http://nth-mis-app-01/ReportServer/Pages/ReportViewer.aspx?%2fColeg+Powys%2fSkills+Matrix%2fmatrix-slip-2021&PERSON_CODE=" + txtStudentID.Text;// + "&rs:Format=PDF";
                                                                                                                                                                              //  Response.Write("<script> window.open('" + pageurl + "','_blank'); </script>");
             Response.Redirect(pageurl);
         }
@@ -212,8 +212,60 @@ namespace GCSEMatrix
                 var DDLGrade = (DropDownList)ri.FindControl("DDLGCSEGrade");
                 var filterGCSEGrades = new CommonCode();
                 filterGCSEGrades.FilterGcseGrades(lblSubjectName, DDLGrade);
+                
             }
 
+
+
+        }
+
+
+        protected void DDLGCSEGrade_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            int welshBaccFoundationSelected = 0;
+            int welshBaccNationalSelected = 0;
+
+            foreach (RepeaterItem ri in rptGcseSubjectList.Items)
+            {
+                var lblSubjectName = (Label)ri.FindControl("lblSubjectName");
+                var DDLGrade = (DropDownList)ri.FindControl("DDLGCSEGrade");
+                var filterGCSEGrades = new CommonCode();
+                filterGCSEGrades.FilterGcseGrades(lblSubjectName, DDLGrade);
+                var lblSubjectCode = (Label)ri.FindControl("lblSubjectType");
+
+                if (lblSubjectCode.Text == "WELSHBACCFOUND" && DDLGrade.SelectedItem.Text != "Select Grade")
+                {
+                    welshBaccFoundationSelected++;
+
+                }
+
+                if (lblSubjectCode.Text == "WELSHBACCNAT" && DDLGrade.SelectedItem.Text != "Select Grade")
+                {
+                    welshBaccNationalSelected++;
+                }
+            }
+
+
+            if (welshBaccNationalSelected == welshBaccFoundationSelected)
+            {
+                var checkIfNoOptionsSelected = welshBaccNationalSelected + welshBaccFoundationSelected;
+                // if both have been unselected then don't do anything else run validation
+                if(checkIfNoOptionsSelected == 0)
+                {
+                    
+                }
+                else
+                {
+                    WelshBaccError.Visible = true;
+                    modalPopupEx.Show();
+                    BtnSaveResults.Enabled = false;
+                }
+            }
+            else
+            {
+                WelshBaccError.Visible = false;
+                BtnSaveResults.Enabled = true;
+            }
         }
 
         protected void gvVocationalQual_RowDataBound(object sender, GridViewRowEventArgs e)
@@ -281,7 +333,8 @@ namespace GCSEMatrix
                 return false;
             }
             return true;
-        }  
+        } 
+        
         protected void InsertLearnerResults()
         {
             // delete everything in the learner results first, then insert new values (to stop duplicate data)
@@ -303,7 +356,7 @@ namespace GCSEMatrix
             insertCoreGsceEnglish.InsertLearnerResults(personCode, studentName, ULI, UCI, DDLCoreGCSEGrade1.SelectedValue, "GCSEFULL", lblGCSEEnglish.Text, resultsStatus, createdDate, HttpContext.Current.User.Identity.Name);
             insertCoreGcseMaths.InsertLearnerResults(personCode, studentName, ULI, UCI, DDLCoreGCSEGrade2.SelectedValue, "GCSEFULL", lblGCSEMaths.Text, resultsStatus, createdDate, HttpContext.Current.User.Identity.Name);
             insertCoreGcseNumeracy.InsertLearnerResults(personCode, studentName, ULI, UCI, DDLCoreGCSEGrade3.SelectedValue, "GCSEFULL", lblGCSENumeracy.Text, resultsStatus, createdDate, HttpContext.Current.User.Identity.Name);
-
+            insertCoreGcseWelsh.InsertLearnerResults(personCode, studentName, ULI, UCI, DDLCoreGCSEGrade4.SelectedValue, "GCSEFULL", lblGCSEWelsh.Text, resultsStatus, createdDate, HttpContext.Current.User.Identity.Name);
 
             foreach (RepeaterItem ri in rptGcseSubjectList.Items)
             {
@@ -319,7 +372,7 @@ namespace GCSEMatrix
                 {
                     var insertGCSEs = new Methods();
                     insertGCSEs.InsertLearnerResults(personCode, studentName, ULI, UCI, gradeName.SelectedValue, subjectCode.Text, subjectName.Text, resultsStatus, createdDate, HttpContext.Current.User.Identity.Name);
-                    insertCoreGcseWelsh.InsertLearnerResults(personCode, studentName, ULI, UCI, DDLCoreGCSEGrade4.SelectedValue, "GCSEFULL", lblGCSEWelsh.Text, resultsStatus, createdDate, HttpContext.Current.User.Identity.Name);
+//                    insertCoreGcseWelsh.InsertLearnerResults(personCode, studentName, ULI, UCI, DDLCoreGCSEGrade4.SelectedValue, "GCSEFULL", lblGCSEWelsh.Text, resultsStatus, createdDate, HttpContext.Current.User.Identity.Name);
 
                 }
 
@@ -428,6 +481,7 @@ namespace GCSEMatrix
         }
 
         #endregion
+
     }
 
 }

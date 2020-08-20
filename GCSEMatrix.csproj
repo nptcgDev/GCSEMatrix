@@ -98,6 +98,7 @@
     <Content Include="Content\bootstrap-theme.css.map" />
     <Content Include="Content\bootstrap.min.css.map" />
     <Content Include="Content\bootstrap.css.map" />
+    <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
     <None Include="Properties\PublishProfiles\GCSE Matrix - Live environment.pubxml" />
     <None Include="Properties\PublishProfiles\New Rob Devel.pubxml" />
     <None Include="Scripts\jquery-3.1.1.intellisense.js" />
@@ -121,7 +122,6 @@
     <Compile Include="DAO\ReturnData.cs" />
     <Compile Include="AddResults.aspx.cs">
       <DependentUpon>AddResults.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="AddResults.aspx.designer.cs">
       <DependentUpon>AddResults.aspx</DependentUpon>

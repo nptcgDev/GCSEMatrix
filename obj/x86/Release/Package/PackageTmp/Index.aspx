@@ -30,7 +30,7 @@
             <asp:ControlParameter ControlID="lbPersonCode" Name="person_code" PropertyName="Text" Type="String" />
         </SelectParameters>
     </asp:ObjectDataSource>
-    <asp:Repeater ID="RptSearchResults" runat="server" DataSourceID="odsGetLearnerDetails">
+    <asp:Repeater ID="RptSearchResults" runat="server" DataSourceID="odsGetLearnerDetails" OnItemDataBound="RptSearchResults_ItemDataBound">
         <HeaderTemplate>
             <table class="table table-bordered table-inverse">
                 <tr>
@@ -50,10 +50,13 @@
                 <td><%# Eval("date_of_birth","{0:d}") %></td>
                 <td>
                     <asp:HyperLink ID="lnkAddResults" runat="server" CssClass="btn btn-default" NavigateUrl='<%#"AddResults.aspx?personCode=" + Eval("person_code") %>'>Add Results</asp:HyperLink>
-                    <%--                        <asp:HyperLink ID="lnkUpdateResults" runat="server" CssClass="btn btn-default" NavigateUrl='<%#"UpdateResults.aspx?person_code=" + Eval("person_code") %>'>Update Results</asp:HyperLink>--%>
+                    <asp:HyperLink ID="lnkViewExistingResults" runat="server" Target="_blank" CssClass="btn btn-default" NavigateUrl='<%#"http://nth-mis-app-01/ReportServer/Pages/ReportViewer.aspx?%2fColeg+Powys%2fSkills+Matrix%2fmatrix-slip-2021&PERSON_CODE=" + Eval("person_code") %>'>View Existing Results</asp:HyperLink>
+
+                    <asp:Label ID="lblNoResultsMessage" Visible="false" runat="server" CssClass="alert-danger " Text="It has previously been indicated that this learner has no results to enter onto the system. Therefore it is not possible to enter results for this learner."></asp:Label>
                 </td>
-                <td class="sr-only">
-                    <asp:Label ID="lblRecordExists" runat="server" Text='<%# Eval("record_exists") %>'></asp:Label></td>
+
+                    <asp:Label ID="lblResultsStatus" Visible="false" runat="server" Text='<%# Eval("results_status") %>'></asp:Label>
+                    <asp:Label ID="lbExistingResults" Visible="false" runat="server" Text='<%# Eval("existing_entries") %>'></asp:Label>
             </tr>
         </ItemTemplate>
         <FooterTemplate>

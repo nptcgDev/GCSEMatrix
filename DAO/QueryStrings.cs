@@ -13,7 +13,7 @@ namespace GCSEMatrix.DAO
                 query = @"INSERT INTO FES.NPTCG_MATRIX_LEARNER_RESULTS
                             (PERSON_CODE, ACYR, STUDENT_NAME, ULI_NUMBER, UCI_NUMBER, GRADE_NAME, SUBJECT_CODE,
                             SUBJECT_NAME, RESULTS_STATUS,CREATED_DATE, CREATED_BY, RECORD_EXISTS)
-                            VALUES (:Person_Code,'1920', :Full_Name, :ULI_Number,
+                            VALUES (:Person_Code,'2021', :Full_Name, :ULI_Number,
                             :UCI_Number, :Grade_Name, :Subject_Code, :Subject_Name,
                             :Results_Status, :Created_Date, :Created_By,'Y')";
             return query;
@@ -52,7 +52,7 @@ namespace GCSEMatrix.DAO
         public string DeleteLearnerResults()
         {
             var query = "";
-            query = @"DELETE FROM FES.NPTCG_MATRIX_LEARNER_RESULTS WHERE PERSON_CODE=:PERSON_CODE AND ACYR='1920'";
+            query = @"DELETE FROM FES.NPTCG_MATRIX_LEARNER_RESULTS WHERE PERSON_CODE =:PERSON_CODE AND ACYR='2021' ";
             return query;
         }
     }

@@ -27,15 +27,16 @@
                 <div class="table-responsive col-lg-6">
                     <p class="lead">Core GCSEs</p>
 
+
                     <table class="table table-bordered table-inverse">
                         <tr>
                             <th>Subject</th>
                             <th>Grade</th>
                         </tr>
                         <tr>
-                            <td>
+                            <td style="height: 65px">
                                 <asp:Label ID="lblGCSEEnglish" runat="server" CssClass="form-control" Text="English Language"></asp:Label></td>
-                            <td>
+                            <td style="height: 65px">
                                 <asp:DropDownList ID="DDLCoreGCSEGrade1" CssClass="form-control" runat="server" AutoPostBack="True">
                                     <asp:ListItem>Select Grade</asp:ListItem>
                                     <asp:ListItem>A*</asp:ListItem>
@@ -113,7 +114,7 @@
                         <asp:CompareValidator ID="CVWelsh" runat="server"  Display="None" ValidationGroup="valGroup" EnableClientScript="false" ControlToValidate="DDLCoreGCSEGrade4"  ErrorMessage="You must enter a grade, if the learner doesn't have a Welsh First Language GCSE then please select 'No Grade'." Operator="NotEqual" ValueToCompare="Select Grade" ForeColor="Red" SetFocusOnError="true" ValidateRequestMode="Inherit" Font-Size="Large" />
                         <asp:CompareValidator ID="CVNumeracy" runat="server" Display="None" ValidationGroup="valGroup" EnableClientScript="false" ControlToValidate="DDLCoreGCSEGrade3" ErrorMessage="You must enter a grade, if the learner doesn't have a Mathematics Numeracy GCSE then please select 'No Grade'." Operator="NotEqual" ValueToCompare="Select Grade" ForeColor="Red" SetFocusOnError="true" ValidateRequestMode="Inherit" Font-Size="Large" />
                          <asp:CompareValidator ID="CVMaths" runat="server"  Display="None" ValidationGroup="valGroup" EnableClientScript="false" ControlToValidate="DDLCoreGCSEGrade2" ErrorMessage="Mathematics is a required subject, you must enter a grade for it." Operator="NotEqual" ValueToCompare="Select Grade" ForeColor="Red" SetFocusOnError="true" ValidateRequestMode="Inherit" Font-Size="Medium" />
-                        <asp:CompareValidator ID="CVEnglish" runat="server" Display="None" ValidationGroup="valGroup" EnableClientScript="false" ControlToValidate="DDLCoreGCSEGrade1" ErrorMessage="English Language is a required subject, you must enter a grade for it." Operator="NotEqual" ValueToCompare="Select Grade" ForeColor="Red" SetFocusOnError="true" ValidateRequestMode="Inherit" Font-Size="Medium" />
+                        <asp:CompareValidator ID="CVEnglish" runat="server" Display="None" ValidationGroup="valGroup" EnableClientScript="false" ControlToValidate="DDLCoreGCSEGrade1" ErrorMessage="English Language is a required subject, you must enter a grade for it." Operator="NotEqual" ValueToCompare="Select Grade" ForeColor="Red" SetFocusOnError="true" ValidateRequestMode="Inherit" Font-Size="Medium" />                     
                     </div>
 
                     <asp:ObjectDataSource ID="odsGetGcseSubjects" runat="server" SelectMethod="GetGcseSubjectList" TypeName="GCSEMatrix.DAO.ReturnData"></asp:ObjectDataSource>
@@ -130,7 +131,7 @@
                                 <td>
                                     <asp:Label ID="lblSubjectName" runat="server" CssClass="form-control" Text='<%# Eval("SUBJECT_NAME") %>'></asp:Label></td>
                                 <td>
-                                    <asp:DropDownList ID="DDLGCSEGrade" CssClass="form-control" runat="server" AutoPostBack="True">
+                                    <asp:DropDownList ID="DDLGCSEGrade" CssClass="form-control" runat="server" OnSelectedIndexChanged="DDLGCSEGrade_SelectedIndexChanged"  AutoPostBack="True" CausesValidation="False">
                                         <asp:ListItem>Select Grade</asp:ListItem>
                                         <asp:ListItem>A*</asp:ListItem>
                                         <asp:ListItem>A</asp:ListItem>
@@ -256,12 +257,14 @@
                         <asp:Panel ID="PnlErrorsPanel" runat="server" Style="display: none; border-style: solid; border-width: thin; background-color: #ffffff; border-color: #FFDBCA">
 
                         <div class="modal-header">
-                            <h1>Errors with entries of core GCSEs</h1>
+                            <h1>Errors made</h1>
                         </div>
                         <asp:ValidationSummary ID="valSummary" CssClass="modal-dialog" runat="server"
                             DisplayMode="BulletList" ShowSummary="true"
                             ValidationGroup="valGroup" Font-Size="Large" />
-
+                        <div id="WelshBaccError" class="modal-dialog" visible="false" runat="server">
+                            You have entered a grade for: <b>WBQ/1&2 - Skills Challenge Welsh Bacc Foundation </b> and <b>WBQ/1&2 - Skills Challenge Welsh Bacc National</b>, please remove one of the grades.
+                         </div>
                         <div class="modal-footer">
                             <asp:Button ID="BtnCloseModal" CssClass="btn btn-primary" runat="server" Text="Ok" />
                         </div>

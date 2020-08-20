@@ -25,7 +25,7 @@ namespace GCSEMatrix.DAO
 
             OracleConnection con = new OracleConnection(connectionString);
 
-            OracleCommand cmd = new OracleCommand("SELECT SUBJECT_NAME, SUBJECT_CODE, SUBJECT_VALUE FROM FES.NPTCG_MATRIX_SUBJECT WHERE SUBJECT_CODE IN ('GCSEFULL','GCSESHORT','GCSEFULLEQUIV') AND SUBJECT_GROUP IS NOT NULL AND CORE_SUBJECT = 'N' ORDER BY SUBJECT_GROUP, SUBJECT_ID ASC", con);
+            OracleCommand cmd = new OracleCommand("SELECT SUBJECT_NAME, SUBJECT_CODE, SUBJECT_VALUE FROM FES.NPTCG_MATRIX_SUBJECT WHERE SUBJECT_CODE IN ('GCSEFULL','GCSESHORT','WELSHBACCNAT', 'WELSHBACCFOUND') AND SUBJECT_GROUP IS NOT NULL AND CORE_SUBJECT = 'N' ORDER BY SUBJECT_GROUP, SUBJECT_ID ASC", con);
             using (con)
             {
                 con.Open();
@@ -58,7 +58,7 @@ namespace GCSEMatrix.DAO
 
             OracleConnection con = new OracleConnection(connectionString);
 
-            OracleCommand cmd = new OracleCommand("SELECT SUBJECT_NAME, SUBJECT_CODE, SUBJECT_VALUE FROM FES.NPTCG_MATRIX_SUBJECT WHERE SUBJECT_CODE NOT IN ('GCSEFULL','GCSESHORT','GCSEFULLEQUIV','GCSEFULL-DOUBLE','GCSEFULL-TRIPLE') ORDER BY SUBJECT_GROUP ASC", con);
+            OracleCommand cmd = new OracleCommand("SELECT SUBJECT_NAME, SUBJECT_CODE, SUBJECT_VALUE FROM FES.NPTCG_MATRIX_SUBJECT WHERE SUBJECT_CODE NOT IN ('GCSEFULL','GCSESHORT','WELSHBACCNAT', 'WELSHBACCFOUND', 'GCSEFULL-DOUBLE','GCSEFULL-TRIPLE') ORDER BY SUBJECT_GROUP ASC", con);
             
             using (con)
             {
@@ -178,34 +178,38 @@ namespace GCSEMatrix.DAO
 
             OracleCommand cmd = new OracleCommand();
             cmd.CommandText =
-                @"SELECT DISTINCT 
-                                p.person_code,
-                                fn.full_name,
-                                p.date_of_birth,
-                                nores.results_status 
-                            FROM
-                            fes.people p
-
-                            LEFT OUTER JOIN 
-                            (
-                            SELECT 
+                @"SELECT DISTINCT
+                        p.person_code,
+                        fn.full_name,
+                        p.date_of_birth,
+                        nores.results_status,
+                        res.existing_entries
+                        FROM  fes.people p
+        
+                        LEFT JOIN 
+                                (
+                                SELECT 
                                 person_code,
                                 forename || ' ' || surname AS full_name
-                            FROM 
-                                fes.people
-                            ) fn ON (fn.person_code = P.person_code)
+                                FROM fes.people
+                                ) fn ON (fn.person_code = P.person_code)
 
-                            LEFT OUTER JOIN
-                            (
-
-                            SELECT
-                                nores.person_code,
-                                nores.results_status
-                            FROM
-                                fes.nptcg_matrix_no_results nores
-
-                            ) nores ON (nores.person_code = P.person_code)
-                        where to_char(p.PERSON_CODE) = :personCode order by p.date_of_birth DESC";
+                        LEFT JOIN
+                                (
+                                SELECT
+                                nore.person_code,
+                                nore.results_status
+                                FROM fes.nptcg_matrix_no_results nore 
+                                ) nores ON (nores.person_code = P.person_code)
+                        LEFT JOIN
+                                (
+                                SELECT distinct
+                                res.person_code,
+                                case when res.person_code is null then 0 else 1 end as existing_entries
+                                from fes.nptcg_matrix_learner_results res
+                
+                                ) res ON (res.person_code = p.person_code)
+                        WHERE to_char(p.PERSON_CODE) = :personCode order by p.date_of_birth DESC";
             
             cmd.Parameters.Add(":personCode", person_code);
             cmd.Connection = con;
@@ -256,7 +260,7 @@ namespace GCSEMatrix.DAO
                                                     FES.NPTCG_MATRIX_LEARNER_RESULTS NPTC_R
                                             ) Learner_Results on (Learner_Results.SUBJECT_TAKEN = subjects.subject_name and subjects.subject_code = learner_results.code_of_subject and Learner_Results.person_code =:person_code)
                             WHERE 
-                                SUBJECTS.SUBJECT_CODE IN ('GCSEFULL','GCSESHORT','GCSEFULLEQUIV')
+                                SUBJECTS.SUBJECT_CODE IN ('GCSEFULL','GCSESHORT','WELSHBACCNAT', 'WELSHBACCFOUND')
                                 ";
 
             cmd.Connection = con;
@@ -301,7 +305,7 @@ namespace GCSEMatrix.DAO
                             NPTC_R.ACYR
                             FROM FES.NPTCG_MATRIX_LEARNER_RESULTS NPTC_R
                             ) Learner_Results on (Learner_Results.SUBJECT_TAKEN = subjects.subject_name and subjects.subject_code = learner_results.code_of_subject and Learner_Results.person_code =:person_code)
-                            WHERE SUBJECTS.SUBJECT_CODE NOT IN ('GCSEFULL','GCSESHORT','GCSEFULLEQUIV') AND Learner_Results.ACYR = '1819'";
+                            WHERE SUBJECTS.SUBJECT_CODE NOT IN ('GCSEFULL','GCSESHORT', 'WELSHBACCNAT', 'WELSHBACCFOUND') AND Learner_Results.ACYR = '1819'";
             cmd.Connection = con;
             cmd.Parameters.Add(":person_code", person_code);
             OracleDataAdapter da = new OracleDataAdapter(cmd);
